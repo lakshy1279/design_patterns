@@ -3,17 +3,19 @@ package org.example.Tic_Tac_Toe.atm.States;
 import org.example.Tic_Tac_Toe.atm.Atm;
 import org.example.Tic_Tac_Toe.atm.Factory.AtmStateFactory;
 
-public class CardInsertedState extends AtmStates{
+public class SelectOperations extends AtmStates{
     Atm atm;
-    public CardInsertedState(Atm atm) {
+    public SelectOperations(Atm atm) {
         this.atm = atm;
     }
+
     @Override
-    public void enterPin(String pin) {
-        System.out.println("Pin entered");
-        // pin valiadation api call to bank
-        // if wrong pin throw error
-        atm.setState(AtmStateFactory.getAtmState(atm, "operationSelect"));
+    public void selectMethod(String option){
+        switch (option){
+            case "CashWithdrawal":
+                 atm.setState(AtmStateFactory.getAtmState(atm,"cashWithdrawal"));
+                 break;
+        }
     }
 
     @Override

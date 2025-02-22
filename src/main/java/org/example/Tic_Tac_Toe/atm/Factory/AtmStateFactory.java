@@ -9,17 +9,14 @@ public class AtmStateFactory {
             case "idleState":
                 return new IdleState(atm);
 
-            case "ejectCard":
-                return new EjectCard(atm);
-
             case "insertCard":
                 return new CardInsertedState(atm);
 
             case "cashWithdrawal":
                 return new CashWithdrawState(atm);
 
-
-
+            case "operationSelect":
+                return new SelectOperations(atm);
 
         }
         return null;

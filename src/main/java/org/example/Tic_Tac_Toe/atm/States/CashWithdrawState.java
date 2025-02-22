@@ -1,42 +1,42 @@
 package org.example.Tic_Tac_Toe.atm.States;
 
 import org.example.Tic_Tac_Toe.atm.Atm;
+import org.example.Tic_Tac_Toe.atm.CashWithdrawal.CashWithdrawalProcess;
+import org.example.Tic_Tac_Toe.atm.CashWithdrawal.FiveHunwithdrawProcess;
+import org.example.Tic_Tac_Toe.atm.CashWithdrawal.HundredWithdraw;
+import org.example.Tic_Tac_Toe.atm.CashWithdrawal.TwoThousandWithdraw;
 import org.example.Tic_Tac_Toe.atm.Factory.AtmStateFactory;
 
-public class CashWithdrawState implements AtmStates{
+public class CashWithdrawState extends AtmStates{
 
     Atm atm;
     public CashWithdrawState(Atm atm) {
         this.atm = atm;
     }
-    @Override
-    public void enterPin(String pin) {
-        System.out.println("Pin already entered");
-    }
 
     @Override
     public void withdrawMoney(int amount) {
+        System.out.println("Withdrawing " + amount);
         if(atm.getBalance() < amount){
             System.out.println("Insufficient balance");
             return;
         }
+        CashWithdrawalProcess process = new TwoThousandWithdraw(new FiveHunwithdrawProcess(new HundredWithdraw(null)));
+        process.withdrawCash(atm, amount);
         atm.setBalance(atm.getBalance() - amount);
         System.out.println("Please Collect your Cash");
-        atm.setState(AtmStateFactory.getAtmState(atm, "idleState"));
-    }
-
-    @Override
-    public void insertCard(String card) {
-        System.out.println("Not allowed");
+        ejectCard();
     }
 
     @Override
     public void cancelTransaction() {
-        atm.setState(AtmStateFactory.getAtmState(atm, "idleState"));
+        System.out.println("Cancelling transaction");
+        ejectCard();
     }
 
     @Override
     public void ejectCard() {
+        System.out.println("Card Ejected");
         atm.setState(AtmStateFactory.getAtmState(atm, "idleState"));
     }
 }
