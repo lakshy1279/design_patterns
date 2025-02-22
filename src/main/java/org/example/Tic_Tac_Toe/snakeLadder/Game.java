@@ -19,11 +19,9 @@ public class Game {
     }
 
     void intializeGame() {
-        board = new Board(10);
+        board = new Board(10, 5, 4);
         players = new LinkedList<>();
         setPlayers();
-        addSnakes(5);
-        addLadder(4);
         dice = new Dice(1);
         winner = null;
     }
@@ -44,11 +42,9 @@ public class Game {
                 System.out.println("Winner is " + winner.getId());
                 break;
             }
-            int nextRow = nextPos / board.getSize();
-            int nextCol = nextPos % board.getSize();
-            boolean isJumpInNextPos = board.isJumpInCell(nextRow, nextCol);
+            boolean isJumpInNextPos = board.isJumpInCell(nextPos);
             if(isJumpInNextPos){
-                Jump jump = board.getCell(nextRow, nextCol).getJump();
+                Jump jump = board.getCell(nextPos).getJump();
                 System.out.println("Taking Jump: " + jump.getStart() + " " + jump.getEnd());
                 nextPos = jump.getEnd();
             }
@@ -62,41 +58,5 @@ public class Game {
         Player player2 = new Player();
         players.add(player1);
         players.add(player2);
-    }
-
-    void addSnakes(int numberOfSnakes) {
-        int i = 0;
-        while(i < numberOfSnakes) {
-            int minBound = 1;
-            int maxBound = board.getSize()*board.getSize() - 2;
-            int start =  ThreadLocalRandom.current().nextInt(minBound, maxBound);
-            int end =  ThreadLocalRandom.current().nextInt(minBound, maxBound);
-            if(end >  start)
-                continue;
-            Jump jump = new Jump(start, end);
-            int startCellRow = start/board.getSize();
-            int startCellCol = start%board.getSize();
-            System.out.println("Add snake " + startCellRow + " " + startCellCol);
-            board.setJumpToCell(startCellRow, startCellCol, jump);
-            i++;
-        }
-    }
-
-    void addLadder(int numberOfLadders) {
-        int i = 0;
-        while(i < numberOfLadders) {
-            int minBound = 1;
-            int maxBound = board.getSize()*board.getSize() - 2;
-            int start =  ThreadLocalRandom.current().nextInt(minBound, maxBound);
-            int end =  ThreadLocalRandom.current().nextInt(minBound, maxBound);
-            if(end < start)
-                continue;
-            Jump jump = new Jump(start, end);
-            int startCellRow = start/board.getSize();
-            int startCellCol = start%board.getSize();
-            System.out.println("Add ladder " + startCellRow + " " + startCellCol);
-            board.setJumpToCell(startCellRow, startCellCol, jump);
-            i++;
-        }
     }
 }
